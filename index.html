@@ -1,15 +1,792 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Absensi & Nilai Siswa</title><style>
-:root{--navy:#123a63;--blue:#17639c;--pale:#eef6fc;--line:#d7e5f0;--text:#172033}*{box-sizing:border-box}body{margin:0;background:#f3f7fb;color:var(--text);font:16px system-ui,-apple-system,"Segoe UI",sans-serif}header{background:var(--navy);color:white;padding:20px}.brand{max-width:1100px;margin:auto;display:flex;gap:14px;align-items:center}.logo{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#38bdf8;color:#082f49;font-size:24px}h1{font-size:23px;margin:0}header p{margin:3px 0 0;color:#dbeafe;font-size:14px}.wrap{max-width:1100px;margin:auto;padding:22px 16px}.panel,.tablebox{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 12px #14324d0d}.controls{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;padding:16px;align-items:end}label{font-size:14px;font-weight:650;display:grid;gap:6px}input,select,textarea,button{font:inherit;border:1px solid #c8d9e6;border-radius:9px;padding:9px 11px;background:white;color:inherit}button{cursor:pointer;font-weight:650}.primary{background:var(--blue);color:white;border-color:var(--blue)}.tabs{display:flex;gap:7px;overflow:auto;margin:18px 0;padding:5px;background:#ddebF7;border-radius:13px}.tabs button{white-space:nowrap;flex:1;background:transparent;border:0}.tabs button.on{background:white;color:#124c79;box-shadow:0 1px 5px #123a6322}.page{display:none}.page.on{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px}.card{text-align:center;background:white;border:1px solid var(--line);border-radius:12px;padding:12px}.card b{display:block;font-size:22px;color:#145b91}.tablebox{overflow:auto}table{width:100%;border-collapse:collapse;min-width:690px}th{background:var(--pale);text-align:left}th,td{padding:10px;border-bottom:1px solid #e7eef4}th.num,td.num{text-align:center;width:60px}td input,td select{width:100%;min-width:80px;padding:7px}.actions{display:flex;justify-content:flex-end;gap:9px;margin:14px 0}.empty{text-align:center;color:#64748b;padding:36px}.journal-form{padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.wide{grid-column:span 2}.full{grid-column:1/-1}.count{text-align:center;background:var(--pale);border-radius:10px;padding:8px 20px}.count b{display:block;font-size:20px}.note{font-size:12px;color:#64748b;text-align:center;margin-top:28px}@media(max-width:700px){.controls,.journal-form{grid-template-columns:1fr}.wide{grid-column:auto}.tabs button{flex:none}.cards{grid-template-columns:repeat(2,1fr)}h1{font-size:20px}.wrap{padding:15px 10px}}
-</style></head><body><header><div class="brand"><div class="logo">▣</div><div><h1>Absensi & Nilai Siswa</h1><p>SMP Negeri 54 Palembang</p></div></div></header><main class="wrap"><section class="panel controls"><label>Kelas<select id="kelas"></select></label><label>Tanggal absensi<input id="tanggal" type="date"></label><div class="count">Jumlah<b id="jumlah">0</b></div></section><nav class="tabs" id="tabs"><button data-page="absen" class="on">Absensi</button><button data-page="nilai">Daftar Nilai</button><button data-page="rekap-absen">Rekap Absen</button><button data-page="rekap-nilai">Rekap Nilai</button><button data-page="jurnal">Jurnal Guru</button></nav><section id="absen" class="page on"></section><section id="nilai" class="page"></section><section id="rekap-absen" class="page"></section><section id="rekap-nilai" class="page"></section><section id="jurnal" class="page"></section><p class="note">Data tersimpan pada browser/perangkat yang digunakan.</p></main><script>
-const S={"VIII.1":["Abibah Khanzana","Al Gusablena","Amirah Khairani","Ananda Putri","Annisa Humaira","Ashillafibria Putri","Assyifa Ainun Habibah","Aura Putri Pratiwi","Azcella Wijaya","Azka Alvira Otriancha Putri","Azka Okan Nur Rahman","Daffa Aditya Hakim","Fahry Anugrah","Gading Indiarta","Gadiza Noura Nandra","Hafhiz Bustomi","Indah Kirana","Indri Meilani","Ilyasah Aryasatya Syahputra","Khayla Zafirah","M. Aqil Thaqif","M. Nizam Prasetyo","M. Satria Prawira","M. Rizqi Athallah","Mafaza Naira Maharani","Mahira Destri","Muhammad Kenzhie Gazhagti","Muhammad Lucky Alfarizky Putra","Muhammad Naufal Rizfi","Nadhirah Putri Areta","Nadya Rahma","Nesila Putri Yanti","Pramudya Ahmad Sakhiy","Raisa Nur Safitri","Riska Rahmadhani","Salwa Daniyah Rahma","Senandung Cinta Alrahmi","Talia Aqilah Zafirah","Talita Morgana Kasih","Herika Athalia"],"VIII.2":["Afiqah Mursidah Wd","Ahsab Al Fattah","Ainun","Almira Nurya Zahra Simatupang","Annisa Pertiwi","Aurellia Melody Queen Silitonga","Ayunda Ria Kirana Simbolon","Azzam Ardian","Balqis Asyifa Rifa’i","Bilqis Dzakiya Adzra","Dwi Ena Hartina","Enjel Natasya","Faqih Al-Fairus","Farel Alfarezi","Fathir Tamim Sadad","Hafiz Mahardika","Inayah Maghfiroh","Indah Oktarina","Irdina Fedrananda","Kayla Shafiyah Balqis","Keyla Putri Rahmadani","Khalifa Linara Shakila","M. Khairy Daffa","M. Revaldo Aryaduta","M. Reza Anugrah","Muhammad Afif Ramadhanu","Muhammad Al Liam Lie","Muhammad Ibnu Raffa Arrasyid","Muhammad Raffi Octa Dwiyono","Nayla Septiani","Reza Dinata","Rhelia Salsabila","Rira Marhamah Syahira","Rizky Dwi Handayani","Rizwan Raihan Shafiullah","Shakiel Abizard Kendy","Siti Adzana Febri Yanti","Syifa Quinna Azkiara Rangga","Yana Jelita Fathorani"],"VIII.3":["Aerlyn Bellvania Kirana","Alika Khanza Azahra","Ahmad Dzikry Al Akbar","Albert Favilia Johanes","Aqila Sofwatul Inayah","Aqilla Ramadani","Arsenio Aprillio Yusuf","Athaya Indah Putri","Clarisa Zahrani Salsabila","Dani Firmansyah","Danish Denial","Dinda Alisa Maharani","Elhandi Dzakwan Akbar","Izza Tunnisa Azarah","Junicha Fadhiyah Putri Derasti","Kayila Sagita","Keyla Safira","M. Putra Pratama Ramadhan","M. Akbar Agustia Ramadan","M. Al Hafizh","M. Zeinken Al-Gholibi","Mikayla Jasmine","Muhammad Imam Al Farid","Muhammad Nabil Raqiansyah","Muhammad Naufal Kicandra","Nabila Putri Aisyah","Nadhifa Ufaira Sastra","Naiza Arbyanto","Najwa Annisa Hermansah","Naura Syifa Az-Zahra","Nesya Putri Valensi","R.A. Winsha Yulia Ramadhani","Risma Ramadhani","Silvia Jeanca Anggraini","Syahril Ibnu Alhafiz","Thabita Briana Zafira","Tiva Aprilia","Zahra Amira Rahmani Nurhuri","Zhidan Pandu Wistian","Zulta Aisya Az-Zahra"],"VIII.4":["Adelia Noviandra Saputri","Afiq Saputra","Afiqah Dwi Putri","Ainun Naziroh","Aji Pangestu Pratama","Akbar Syaputra","Alisya Humairah","Anisa Putri Zahra","Aquinna Zhalyka Danessya","Damia Letfia Novellia","Darendra Dava Andrian","Dimas Prayoga","Fatimah Aisyah Bila","Fatinah Zahara","Ghazi Lubawi Putra","Gilang Habibie","Karina Azzahra","Lifvia Venza","M. Abdul Fahriz","M. Hafiz Alfinando","M. Mychael Chandra","M. Naufal Arafat","M. Rifqi Saputra","Muhammad Alif Rizky","Muhammad Rizki Effendi","Mutiara Dwi Kurnia","Naka Rajendra Teska Nugraha","Naura Risky Febrianti","Nawfal Arlista","Nuriya Faqi","Pegi Syakila","R.M. Radinka Gussandra Asyam","Raka Azalia Pramono","Riko Tampati","Ririn Darmawan","Thalita Aulya Utama","Yonita Naila Syakira","Zefirino Balkoza"],"VIII.5":["Ade Renni Julianti","Aisyah Alsyahra","Annisa Jalila Qabidh","Ardha Abiyyu Firmansyah","Arsyfa Khaira Wilda","Biru Aqillah Qhaizafahirah","Chalia Afifah","Chandani Khansa Agata","Denta Fidela","Dhafa Febrian Pratama","Dimas Tri Al Viano","Faiqa Qaireen Siregar","Gilang Zacky Arkadandi","Janeeta Nashywashira","Kania Kirani","Kiki Anugra Pertama","M. Al Patih Pabizio Putra","M. Athaillah Ramadhan","M. Mustafirin Asror","M. Razchel Al Jamaica Syofian","M. Syahdan Muzakki","M. Abib Oktariansyah","Malaeka Fatihah A’lia","Mgs. Muhammad Dzaky","Muhammad Ali Wardana","Muhammad Daffa Azzaky","Muhammad Ghalib Ihsan","Muhammad Raffi Alvino","Mutia Rava Maharani","Nadilla Maharani","Naifa Qanita","Nhazana Novari","Nikeisha Michaela","Razea Zelka","Regina Marhaim","Shaina Izzatunnisa","Umar Abdul Aziz","Yusrya Kamila Emsa","Zahra Amira Rahmani","Rahel Arya Wiyoga"],"VII.7":["Ahmad Rasyid Nur Haddi","Al Yusuf Anugrah","Aleyah Nuha Zahira","Alfarizi Tegar Wijaya","Anaya Baina Sayhona","Aqila Alkhumairoh","Arsankha Virendra Safwan","Asyfa Dwi Maulina","Aura Sintya","Bilqis Azzarah Rizkya","Dinda Sekar Arumi","Dzakira Talita Zahra","Hafidza Aureliaramadhani","Haura Nazhifa Nugroho","Inayah Zaahirah","Izzeroun Muhammad Ghaniyyu","Juliandio Riva Saputra","Kayfania Sidqi Ar-Rachma","Kayla Izzatunnisa","Khalishah Thafana","Livia Vannya Shaputri","Mandin Anggara","Muhamat Al Hafis","Muhammad Alfi Rizky Akbar","Muhammad Alwi Abdillah","Muhammad Ilham Putra Ferdian","Muhammad Kalam Yuri","Muhammad Sultan Pratama","Muhammad Zaidan Ni’Am","Mutiara Syakinah","Nakhla Taqionan Yoza","Rafael Rasta Yudha Pratama","Rafhi Ibrahim","Romi Putra Sanjaya","Sofi Oktarina","Zahirah Mutia Sari Panggar Besy"]};
-const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let K="VIII.1",D=new Date().toISOString().slice(0,10),A={},AN={},N={};
-function load(){A=JSON.parse(localStorage.getItem(`absensi:${K}:${D}`)||"{}");AN=JSON.parse(localStorage.getItem(`catatan-absensi:${K}:${D}`)||"{}");N=JSON.parse(localStorage.getItem(`nilai:${K}`)||"{}");$("#jumlah").textContent=S[K].length;render()}
-function avg(n){let x=N[n];return !x||!x.tugas||!x.uts||!x.uas?'—':((+x.tugas + +x.uts + +x.uas)/3).toFixed(1)}function csv(name,rows){let b='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([b]));a.download=name;a.click()}
-function render(){let names=S[K],c=s=>names.filter(n=>(A[n]||'H')===s).length;$('#absen').innerHTML=`<div class="cards">${[['H','Hadir'],['S','Sakit'],['I','Izin'],['A','Alpa']].map(x=>`<div class="card"><b>${c(x[0])}</b>${x[1]}</div>`).join('')}</div><div class="tablebox"><table><thead><tr><th class="num">No.</th><th>Nama siswa</th><th>Kehadiran</th><th>Catatan</th></tr></thead><tbody>${names.map((n,i)=>`<tr><td class="num">${i+1}</td><td>${esc(n)}</td><td><select data-a="${i}">${[['H','Hadir'],['S','Sakit'],['I','Izin'],['A','Alpa']].map(x=>`<option value="${x[0]}" ${(A[n]||'H')===x[0]?'selected':''}>${x[1]}</option>`).join('')}</select></td><td><input data-an="${i}" value="${esc(AN[n])}" placeholder="Catatan (opsional)"></td></tr>`).join('')}</tbody></table></div><div class="actions"><button id="csvA">Unduh CSV</button><button class="primary" id="saveA">Simpan Absensi</button></div>`;
-$('#nilai').innerHTML=`<div class="tablebox"><table><thead><tr><th class="num">No.</th><th>Nama siswa</th><th>Tugas</th><th>UTS</th><th>UAS</th><th>Rata-rata</th><th>Catatan</th></tr></thead><tbody>${names.map((n,i)=>`<tr><td class="num">${i+1}</td><td>${esc(n)}</td>${['tugas','uts','uas'].map(f=>`<td><input type="number" min="0" max="100" data-n="${i}" data-f="${f}" value="${esc(N[n]?.[f])}"></td>`).join('')}<td class="num">${avg(n)}</td><td><input data-note="${i}" value="${esc(N[n]?.note)}" placeholder="Catatan"></td></tr>`).join('')}</tbody></table></div><div class="actions"><button id="csvN">Unduh CSV</button><button class="primary" id="saveN">Simpan Nilai</button></div>`;
-let rec=Object.keys(localStorage).filter(k=>k.startsWith(`absensi:${K}:`)).map(k=>{let d=k.split(':')[2],o=JSON.parse(localStorage.getItem(k)||'{}'),t=s=>names.filter(n=>(o[n]||'H')===s).length;return[d,t('H'),t('S'),t('I'),t('A')]}).sort((a,b)=>b[0].localeCompare(a[0]));$('#rekap-absen').innerHTML=`<div class="tablebox"><table><thead><tr><th>Tanggal</th><th>Hadir</th><th>Sakit</th><th>Izin</th><th>Alpa</th></tr></thead><tbody>${rec.length?rec.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="5" class="empty">Belum ada absensi tersimpan.</td></tr>`}</tbody></table></div>${rec.length?'<div class="actions"><button id="csvRA">Unduh Rekap</button></div>':''}`;
-$('#rekap-nilai').innerHTML=`<div class="tablebox"><table><thead><tr><th>No.</th><th>Nama</th><th>Tugas</th><th>UTS</th><th>UAS</th><th>Rata-rata</th><th>Catatan</th></tr></thead><tbody>${names.map((n,i)=>`<tr><td>${i+1}</td><td>${esc(n)}</td><td>${N[n]?.tugas||'—'}</td><td>${N[n]?.uts||'—'}</td><td>${N[n]?.uas||'—'}</td><td>${avg(n)}</td><td>${esc(N[n]?.note||'—')}</td></tr>`).join('')}</tbody></table></div><div class="actions"><button id="csvRN">Unduh Rekap</button></div>`;bind();renderJournal()}
-function bind(){document.querySelectorAll('[data-a]').forEach(e=>e.onchange=()=>{let n=S[K][e.dataset.a];A[n]=e.value;render()});document.querySelectorAll('[data-an]').forEach(e=>e.oninput=()=>AN[S[K][e.dataset.an]]=e.value);document.querySelectorAll('[data-n]').forEach(e=>e.oninput=()=>{let n=S[K][e.dataset.n];N[n]=Object.assign({tugas:'',uts:'',uas:'',note:''},N[n],{[e.dataset.f]:e.value})});document.querySelectorAll('[data-note]').forEach(e=>e.oninput=()=>{let n=S[K][e.dataset.note];N[n]=Object.assign({tugas:'',uts:'',uas:'',note:''},N[n],{note:e.value})});$('#saveA').onclick=()=>{localStorage.setItem(`absensi:${K}:${D}`,JSON.stringify(A));localStorage.setItem(`catatan-absensi:${K}:${D}`,JSON.stringify(AN));alert('Absensi tersimpan');render()};$('#saveN').onclick=()=>{localStorage.setItem(`nilai:${K}`,JSON.stringify(N));alert('Nilai tersimpan');render()};$('#csvA').onclick=()=>csv(`Absensi_${K}_${D}.csv`,[['No','Nama','Tanggal','Status','Catatan'],...S[K].map((n,i)=>[i+1,n,D,A[n]||'H',AN[n]||''])]);$('#csvN').onclick=()=>csv(`Nilai_${K}.csv`,[['No','Nama','Tugas','UTS','UAS','Rata-rata','Catatan'],...S[K].map((n,i)=>[i+1,n,N[n]?.tugas,N[n]?.uts,N[n]?.uas,avg(n),N[n]?.note])]);if($('#csvRA'))$('#csvRA').onclick=()=>csv(`Rekap_Absensi_${K}.csv`,[['Tanggal','Hadir','Sakit','Izin','Alpa'],...Object.keys(localStorage).filter(k=>k.startsWith(`absensi:${K}:`)).map(k=>{let o=JSON.parse(localStorage.getItem(k)||'{}'),t=s=>S[K].filter(n=>(o[n]||'H')===s).length;return[k.split(':')[2],t('H'),t('S'),t('I'),t('A')]})]);$('#csvRN').onclick=()=>csv(`Rekap_Nilai_${K}.csv`,[['No','Nama','Tugas','UTS','UAS','Rata-rata','Catatan'],...S[K].map((n,i)=>[i+1,n,N[n]?.tugas,N[n]?.uts,N[n]?.uas,avg(n),N[n]?.note])])}
-function renderJournal(){let j=JSON.parse(localStorage.getItem('jurnal-guru')||'[]');$('#jurnal').innerHTML=`<div class="panel journal-form"><label>Tanggal<input id="jd" type="date" value="${D}"></label><label>Kelas<select id="jk">${Object.keys(S).map(k=>`<option>${k}</option>`).join('')}</select></label><label>Mata pelajaran<input id="jm" value="IPS"></label><label class="wide">Materi/Topik<input id="jt" placeholder="Contoh: Interaksi sosial"></label><label class="full">Kegiatan dan catatan<input id="ja" placeholder="Kegiatan pembelajaran atau catatan kelas"></label><div class="full actions"><button class="primary" id="saveJ">Simpan Jurnal</button></div></div><div class="tablebox" style="margin-top:14px"><table><thead><tr><th>Tanggal</th><th>Kelas</th><th>Mapel</th><th>Materi/Topik</th><th>Kegiatan/Catatan</th><th></th></tr></thead><tbody>${j.length?j.map(x=>`<tr><td>${x.date}</td><td>${x.className}</td><td>${esc(x.subject)}</td><td>${esc(x.topic)}</td><td>${esc(x.activity||'—')}</td><td><button data-del="${x.id}">Hapus</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty">Belum ada jurnal tersimpan.</td></tr>`}</tbody></table></div>`;$('#saveJ').onclick=()=>{if(!$('#jt').value.trim())return alert('Isi materi/topik terlebih dahulu');j.unshift({id:Date.now(),date:$('#jd').value,className:$('#jk').value,subject:$('#jm').value,topic:$('#jt').value,activity:$('#ja').value});localStorage.setItem('jurnal-guru',JSON.stringify(j));renderJournal()};document.querySelectorAll('[data-del]').forEach(e=>e.onclick=()=>{j=j.filter(x=>x.id!=e.dataset.del);localStorage.setItem('jurnal-guru',JSON.stringify(j));renderJournal()})}
-$('#kelas').innerHTML=Object.keys(S).map(k=>`<option value="${k}">${k} · ${S[k].length} siswa</option>`).join('');$('#tanggal').value=D;$('#kelas').onchange=e=>{K=e.target.value;load()};$('#tanggal').onchange=e=>{D=e.target.value;load()};$('#tabs').onclick=e=>{if(e.target.tagName!=='BUTTON')return;document.querySelectorAll('.tabs button,.page').forEach(x=>x.classList.remove('on'));e.target.classList.add('on');$('#'+e.target.dataset.page).classList.add('on');if(e.target.dataset.page.includes('rekap'))render()};load();
-</script></body></html>
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Absensi & Nilai Siswa</title>
+    <style>
+      :root {
+        --navy: #123a63;
+        --blue: #17639c;
+        --pale: #eef6fc;
+        --line: #d7e5f0;
+        --text: #172033;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f3f7fb;
+        color: var(--text);
+        font:
+          16px system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      header {
+        background: var(--navy);
+        color: white;
+        padding: 20px;
+      }
+      .brand {
+        max-width: 1100px;
+        margin: auto;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .logo {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+        background: #38bdf8;
+        color: #082f49;
+        font-size: 24px;
+      }
+      h1 {
+        font-size: 23px;
+        margin: 0;
+      }
+      header p {
+        margin: 3px 0 0;
+        color: #dbeafe;
+        font-size: 14px;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: auto;
+        padding: 22px 16px;
+      }
+      .panel,
+      .tablebox {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: 0 3px 12px #14324d0d;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto auto;
+        gap: 14px;
+        padding: 16px;
+        align-items: end;
+      }
+      label {
+        font-size: 14px;
+        font-weight: 650;
+        display: grid;
+        gap: 6px;
+      }
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+        border: 1px solid #c8d9e6;
+        border-radius: 9px;
+        padding: 9px 11px;
+        background: white;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        font-weight: 650;
+      }
+      .primary {
+        background: var(--blue);
+        color: white;
+        border-color: var(--blue);
+      }
+      .manage { display: flex; gap: 6px; flex-wrap: wrap; }
+      .danger { color: #b42318; border-color: #f2b8b5; }
+      .tabs {
+        display: flex;
+        gap: 7px;
+        overflow: auto;
+        margin: 18px 0;
+        padding: 5px;
+        background: #ddebf7;
+        border-radius: 13px;
+      }
+      .tabs button {
+        white-space: nowrap;
+        flex: 1;
+        background: transparent;
+        border: 0;
+      }
+      .tabs button.on {
+        background: white;
+        color: #124c79;
+        box-shadow: 0 1px 5px #123a6322;
+      }
+      .page {
+        display: none;
+      }
+      .page.on {
+        display: block;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 9px;
+        margin-bottom: 14px;
+      }
+      .card {
+        text-align: center;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .card b {
+        display: block;
+        font-size: 22px;
+        color: #145b91;
+      }
+      .tablebox {
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 690px;
+      }
+      th {
+        background: var(--pale);
+        text-align: left;
+      }
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #e7eef4;
+      }
+      th.num,
+      td.num {
+        text-align: center;
+        width: 60px;
+      }
+      td input,
+      td select {
+        width: 100%;
+        min-width: 80px;
+        padding: 7px;
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+        margin: 14px 0;
+      }
+      .empty {
+        text-align: center;
+        color: #64748b;
+        padding: 36px;
+      }
+      .journal-form {
+        padding: 16px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 13px;
+      }
+      .wide {
+        grid-column: span 2;
+      }
+      .full {
+        grid-column: 1/-1;
+      }
+      .count {
+        text-align: center;
+        background: var(--pale);
+        border-radius: 10px;
+        padding: 8px 20px;
+      }
+      .count b {
+        display: block;
+        font-size: 20px;
+      }
+      .note {
+        font-size: 12px;
+        color: #64748b;
+        text-align: center;
+        margin-top: 28px;
+      }
+      @media (max-width: 700px) {
+        .controls,
+        .journal-form {
+          grid-template-columns: 1fr;
+        }
+        .wide {
+          grid-column: auto;
+        }
+        .tabs button {
+          flex: none;
+        }
+        .cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        h1 {
+          font-size: 20px;
+        }
+        .wrap {
+          padding: 15px 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <div class="logo">▣</div>
+        <div>
+          <h1>Absensi & Nilai Siswa</h1>
+          <p>SMP Negeri 54 Palembang</p>
+        </div>
+      </div>
+    </header>
+    <main class="wrap">
+      <section class="panel controls">
+        <label>Kelas<select id="kelas"></select></label
+        ><label>Tanggal absensi<input id="tanggal" type="date" /></label>
+        <div class="count">Jumlah<b id="jumlah">0</b></div>
+        <div class="manage">
+          <button class="primary" id="addS">+ Tambah Siswa</button>
+          <button id="resetS">Pulihkan Daftar</button>
+        </div>
+      </section>
+      <nav class="tabs" id="tabs">
+        <button data-page="absen" class="on">Absensi</button
+        ><button data-page="nilai">Daftar Nilai</button
+        ><button data-page="rekap-absen">Rekap Absen</button
+        ><button data-page="rekap-nilai">Rekap Nilai</button
+        ><button data-page="jurnal">Jurnal Guru</button>
+      </nav>
+      <section id="absen" class="page on"></section>
+      <section id="nilai" class="page"></section>
+      <section id="rekap-absen" class="page"></section>
+      <section id="rekap-nilai" class="page"></section>
+      <section id="jurnal" class="page"></section>
+      <p class="note">Data tersimpan pada browser/perangkat yang digunakan.</p>
+    </main>
+    <script>
+      const S = {
+        "VIII.1": [
+          "Abibah Khanzana",
+          "Al Gusablena",
+          "Amirah Khairani",
+          "Ananda Putri",
+          "Annisa Humaira",
+          "Ashillafibria Putri",
+          "Assyifa Ainun Habibah",
+          "Aura Putri Pratiwi",
+          "Azcella Wijaya",
+          "Azka Alvira Otriancha Putri",
+          "Azka Okan Nur Rahman",
+          "Daffa Aditya Hakim",
+          "Fahry Anugrah",
+          "Gading Indiarta",
+          "Gadiza Noura Nandra",
+          "Hafhiz Bustomi",
+          "Indah Kirana",
+          "Indri Meilani",
+          "Ilyasah Aryasatya Syahputra",
+          "Khayla Zafirah",
+          "M. Aqil Thaqif",
+          "M. Nizam Prasetyo",
+          "M. Satria Prawira",
+          "M. Rizqi Athallah",
+          "Mafaza Naira Maharani",
+          "Mahira Destri",
+          "Muhammad Kenzhie Gazhagti",
+          "Muhammad Lucky Alfarizky Putra",
+          "Muhammad Naufal Rizfi",
+          "Nadhirah Putri Areta",
+          "Nadya Rahma",
+          "Nesila Putri Yanti",
+          "Pramudya Ahmad Sakhiy",
+          "Raisa Nur Safitri",
+          "Riska Rahmadhani",
+          "Salwa Daniyah Rahma",
+          "Senandung Cinta Alrahmi",
+          "Talia Aqilah Zafirah",
+          "Talita Morgana Kasih",
+          "Herika Athalia",
+        ],
+        "VIII.2": [
+          "Afiqah Mursidah Wd",
+          "Ahsab Al Fattah",
+          "Ainun",
+          "Almira Nurya Zahra Simatupang",
+          "Annisa Pertiwi",
+          "Aurellia Melody Queen Silitonga",
+          "Ayunda Ria Kirana Simbolon",
+          "Azzam Ardian",
+          "Balqis Asyifa Rifa’i",
+          "Bilqis Dzakiya Adzra",
+          "Dwi Ena Hartina",
+          "Enjel Natasya",
+          "Faqih Al-Fairus",
+          "Farel Alfarezi",
+          "Fathir Tamim Sadad",
+          "Hafiz Mahardika",
+          "Inayah Maghfiroh",
+          "Indah Oktarina",
+          "Irdina Fedrananda",
+          "Kayla Shafiyah Balqis",
+          "Keyla Putri Rahmadani",
+          "Khalifa Linara Shakila",
+          "M. Khairy Daffa",
+          "M. Revaldo Aryaduta",
+          "M. Reza Anugrah",
+          "Muhammad Afif Ramadhanu",
+          "Muhammad Al Liam Lie",
+          "Muhammad Ibnu Raffa Arrasyid",
+          "Muhammad Raffi Octa Dwiyono",
+          "Nayla Septiani",
+          "Reza Dinata",
+          "Rhelia Salsabila",
+          "Rira Marhamah Syahira",
+          "Rizky Dwi Handayani",
+          "Rizwan Raihan Shafiullah",
+          "Shakiel Abizard Kendy",
+          "Siti Adzana Febri Yanti",
+          "Syifa Quinna Azkiara Rangga",
+          "Yana Jelita Fathorani",
+        ],
+        "VIII.3": [
+          "Aerlyn Bellvania Kirana",
+          "Alika Khanza Azahra",
+          "Ahmad Dzikry Al Akbar",
+          "Albert Favilia Johanes",
+          "Aqila Sofwatul Inayah",
+          "Aqilla Ramadani",
+          "Arsenio Aprillio Yusuf",
+          "Athaya Indah Putri",
+          "Clarisa Zahrani Salsabila",
+          "Dani Firmansyah",
+          "Danish Denial",
+          "Dinda Alisa Maharani",
+          "Elhandi Dzakwan Akbar",
+          "Izza Tunnisa Azarah",
+          "Junicha Fadhiyah Putri Derasti",
+          "Kayila Sagita",
+          "Keyla Safira",
+          "M. Putra Pratama Ramadhan",
+          "M. Akbar Agustia Ramadan",
+          "M. Al Hafizh",
+          "M. Zeinken Al-Gholibi",
+          "Mikayla Jasmine",
+          "Muhammad Imam Al Farid",
+          "Muhammad Nabil Raqiansyah",
+          "Muhammad Naufal Kicandra",
+          "Nabila Putri Aisyah",
+          "Nadhifa Ufaira Sastra",
+          "Naiza Arbyanto",
+          "Najwa Annisa Hermansah",
+          "Naura Syifa Az-Zahra",
+          "Nesya Putri Valensi",
+          "R.A. Winsha Yulia Ramadhani",
+          "Risma Ramadhani",
+          "Silvia Jeanca Anggraini",
+          "Syahril Ibnu Alhafiz",
+          "Thabita Briana Zafira",
+          "Tiva Aprilia",
+          "Zahra Amira Rahmani Nurhuri",
+          "Zhidan Pandu Wistian",
+          "Zulta Aisya Az-Zahra",
+        ],
+        "VIII.4": [
+          "Adelia Noviandra Saputri",
+          "Afiq Saputra",
+          "Afiqah Dwi Putri",
+          "Ainun Naziroh",
+          "Aji Pangestu Pratama",
+          "Akbar Syaputra",
+          "Alisya Humairah",
+          "Anisa Putri Zahra",
+          "Aquinna Zhalyka Danessya",
+          "Damia Letfia Novellia",
+          "Darendra Dava Andrian",
+          "Dimas Prayoga",
+          "Fatimah Aisyah Bila",
+          "Fatinah Zahara",
+          "Ghazi Lubawi Putra",
+          "Gilang Habibie",
+          "Karina Azzahra",
+          "Lifvia Venza",
+          "M. Abdul Fahriz",
+          "M. Hafiz Alfinando",
+          "M. Mychael Chandra",
+          "M. Naufal Arafat",
+          "M. Rifqi Saputra",
+          "Muhammad Alif Rizky",
+          "Muhammad Rizki Effendi",
+          "Mutiara Dwi Kurnia",
+          "Naka Rajendra Teska Nugraha",
+          "Naura Risky Febrianti",
+          "Nawfal Arlista",
+          "Nuriya Faqi",
+          "Pegi Syakila",
+          "R.M. Radinka Gussandra Asyam",
+          "Raka Azalia Pramono",
+          "Riko Tampati",
+          "Ririn Darmawan",
+          "Thalita Aulya Utama",
+          "Yonita Naila Syakira",
+          "Zefirino Balkoza",
+        ],
+        "VIII.5": [
+          "Ade Renni Julianti",
+          "Aisyah Alsyahra",
+          "Annisa Jalila Qabidh",
+          "Ardha Abiyyu Firmansyah",
+          "Arsyfa Khaira Wilda",
+          "Biru Aqillah Qhaizafahirah",
+          "Chalia Afifah",
+          "Chandani Khansa Agata",
+          "Denta Fidela",
+          "Dhafa Febrian Pratama",
+          "Dimas Tri Al Viano",
+          "Faiqa Qaireen Siregar",
+          "Gilang Zacky Arkadandi",
+          "Janeeta Nashywashira",
+          "Kania Kirani",
+          "Kiki Anugra Pertama",
+          "M. Al Patih Pabizio Putra",
+          "M. Athaillah Ramadhan",
+          "M. Mustafirin Asror",
+          "M. Razchel Al Jamaica Syofian",
+          "M. Syahdan Muzakki",
+          "M. Abib Oktariansyah",
+          "Malaeka Fatihah A’lia",
+          "Mgs. Muhammad Dzaky",
+          "Muhammad Ali Wardana",
+          "Muhammad Daffa Azzaky",
+          "Muhammad Ghalib Ihsan",
+          "Muhammad Raffi Alvino",
+          "Mutia Rava Maharani",
+          "Nadilla Maharani",
+          "Naifa Qanita",
+          "Nhazana Novari",
+          "Nikeisha Michaela",
+          "Razea Zelka",
+          "Regina Marhaim",
+          "Shaina Izzatunnisa",
+          "Umar Abdul Aziz",
+          "Yusrya Kamila Emsa",
+          "Zahra Amira Rahmani",
+          "Rahel Arya Wiyoga",
+        ],
+        "VII.7": [
+          "Ahmad Rasyid Nur Haddi",
+          "Al Yusuf Anugrah",
+          "Aleyah Nuha Zahira",
+          "Alfarizi Tegar Wijaya",
+          "Anaya Baina Sayhona",
+          "Aqila Alkhumairoh",
+          "Arsankha Virendra Safwan",
+          "Asyfa Dwi Maulina",
+          "Aura Sintya",
+          "Bilqis Azzarah Rizkya",
+          "Dinda Sekar Arumi",
+          "Dzakira Talita Zahra",
+          "Hafidza Aureliaramadhani",
+          "Haura Nazhifa Nugroho",
+          "Inayah Zaahirah",
+          "Izzeroun Muhammad Ghaniyyu",
+          "Juliandio Riva Saputra",
+          "Kayfania Sidqi Ar-Rachma",
+          "Kayla Izzatunnisa",
+          "Khalishah Thafana",
+          "Livia Vannya Shaputri",
+          "Mandin Anggara",
+          "Muhamat Al Hafis",
+          "Muhammad Alfi Rizky Akbar",
+          "Muhammad Alwi Abdillah",
+          "Muhammad Ilham Putra Ferdian",
+          "Muhammad Kalam Yuri",
+          "Muhammad Sultan Pratama",
+          "Muhammad Zaidan Ni’Am",
+          "Mutiara Syakinah",
+          "Nakhla Taqionan Yoza",
+          "Rafael Rasta Yudha Pratama",
+          "Rafhi Ibrahim",
+          "Romi Putra Sanjaya",
+          "Sofi Oktarina",
+          "Zahirah Mutia Sari Panggar Besy",
+        ],
+      };
+      const $ = (s) => document.querySelector(s),
+        esc = (s) =>
+          String(s ?? "").replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+      let K = "VIII.1",
+        D = new Date().toISOString().slice(0, 10),
+        A = {},
+        AN = {},
+        N = {};
+      const names = () => JSON.parse(localStorage.getItem(`siswa:${K}`) || "null") || S[K];
+      function load() {
+        A = JSON.parse(localStorage.getItem(`absensi:${K}:${D}`) || "{}");
+        AN = JSON.parse(
+          localStorage.getItem(`catatan-absensi:${K}:${D}`) || "{}",
+        );
+        N = JSON.parse(localStorage.getItem(`nilai:${K}`) || "{}");
+        $("#jumlah").textContent = names().length;
+        render();
+      }
+      function avg(n) {
+        let x = N[n];
+        return !x || !x.tugas || !x.uts || !x.uas
+          ? "—"
+          : ((+x.tugas + +x.uts + +x.uas) / 3).toFixed(1);
+      }
+      function csv(name, rows) {
+        let b =
+            "\ufeff" +
+            rows
+              .map((r) =>
+                r
+                  .map((v) => '"' + String(v ?? "").replaceAll('"', '""') + '"')
+                  .join(","),
+              )
+              .join("\n"),
+          a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([b]));
+        a.download = name;
+        a.click();
+      }
+      function render() {
+        let roster = names(),
+          c = (s) => roster.filter((n) => (A[n] || "H") === s).length;
+        $("#absen").innerHTML = `<div class="cards">${[
+          ["H", "Hadir"],
+          ["S", "Sakit"],
+          ["I", "Izin"],
+          ["A", "Alpa"],
+        ]
+          .map((x) => `<div class="card"><b>${c(x[0])}</b>${x[1]}</div>`)
+          .join(
+            "",
+          )}</div><div class="tablebox"><table><thead><tr><th class="num">No.</th><th>Nama siswa</th><th>Kehadiran</th><th>Catatan</th><th></th></tr></thead><tbody>${roster
+          .map(
+            (n, i) =>
+              `<tr><td class="num">${i + 1}</td><td>${esc(n)}</td><td><select data-a="${i}">${[
+                ["H", "Hadir"],
+                ["S", "Sakit"],
+                ["I", "Izin"],
+                ["A", "Alpa"],
+              ]
+                .map(
+                  (x) =>
+                    `<option value="${x[0]}" ${(A[n] || "H") === x[0] ? "selected" : ""}>${x[1]}</option>`,
+                )
+                .join(
+                  "",
+                )}</select></td><td><input data-an="${i}" value="${esc(AN[n])}" placeholder="Catatan (opsional)"></td><td><button class="danger" data-remove="${i}">Hapus</button></td></tr>`,
+          )
+          .join(
+            "",
+          )}</tbody></table></div><div class="actions"><button id="csvA">Unduh CSV</button><button class="primary" id="saveA">Simpan Absensi</button></div>`;
+        $("#nilai").innerHTML =
+          `<div class="tablebox"><table><thead><tr><th class="num">No.</th><th>Nama siswa</th><th>Tugas</th><th>UTS</th><th>UAS</th><th>Rata-rata</th><th>Catatan</th><th></th></tr></thead><tbody>${roster.map((n, i) => `<tr><td class="num">${i + 1}</td><td>${esc(n)}</td>${["tugas", "uts", "uas"].map((f) => `<td><input type="number" min="0" max="100" data-n="${i}" data-f="${f}" value="${esc(N[n]?.[f])}"></td>`).join("")}<td class="num">${avg(n)}</td><td><input data-note="${i}" value="${esc(N[n]?.note)}" placeholder="Catatan"></td><td><button class="danger" data-remove="${i}">Hapus</button></td></tr>`).join("")}</tbody></table></div><div class="actions"><button id="csvN">Unduh CSV</button><button class="primary" id="saveN">Simpan Nilai</button></div>`;
+        let rec = Object.keys(localStorage)
+          .filter((k) => k.startsWith(`absensi:${K}:`))
+          .map((k) => {
+            let d = k.split(":")[2],
+              o = JSON.parse(localStorage.getItem(k) || "{}"),
+              t = (s) => roster.filter((n) => (o[n] || "H") === s).length;
+            return [d, t("H"), t("S"), t("I"), t("A")];
+          })
+          .sort((a, b) => b[0].localeCompare(a[0]));
+        $("#rekap-absen").innerHTML =
+          `<div class="tablebox"><table><thead><tr><th>Tanggal</th><th>Hadir</th><th>Sakit</th><th>Izin</th><th>Alpa</th></tr></thead><tbody>${rec.length ? rec.map((r) => `<tr>${r.map((x) => `<td>${x}</td>`).join("")}</tr>`).join("") : `<tr><td colspan="5" class="empty">Belum ada absensi tersimpan.</td></tr>`}</tbody></table></div>${rec.length ? '<div class="actions"><button id="csvRA">Unduh Rekap</button></div>' : ""}`;
+        $("#rekap-nilai").innerHTML =
+          `<div class="tablebox"><table><thead><tr><th>No.</th><th>Nama</th><th>Tugas</th><th>UTS</th><th>UAS</th><th>Rata-rata</th><th>Catatan</th></tr></thead><tbody>${roster.map((n, i) => `<tr><td>${i + 1}</td><td>${esc(n)}</td><td>${N[n]?.tugas || "—"}</td><td>${N[n]?.uts || "—"}</td><td>${N[n]?.uas || "—"}</td><td>${avg(n)}</td><td>${esc(N[n]?.note || "—")}</td></tr>`).join("")}</tbody></table></div><div class="actions"><button id="csvRN">Unduh Rekap</button></div>`;
+        bind();
+        renderJournal();
+      }
+      function bind() {
+        document.querySelectorAll("[data-a]").forEach(
+          (e) =>
+            (e.onchange = () => {
+              let n = names()[e.dataset.a];
+              A[n] = e.value;
+              render();
+            }),
+        );
+        document
+          .querySelectorAll("[data-an]")
+          .forEach(
+            (e) => (e.oninput = () => (AN[names()[e.dataset.an]] = e.value)),
+          );
+        document.querySelectorAll("[data-n]").forEach(
+          (e) =>
+            (e.oninput = () => {
+              let n = names()[e.dataset.n];
+              N[n] = Object.assign(
+                { tugas: "", uts: "", uas: "", note: "" },
+                N[n],
+                { [e.dataset.f]: e.value },
+              );
+            }),
+        );
+        document.querySelectorAll("[data-note]").forEach(
+          (e) =>
+            (e.oninput = () => {
+              let n = names()[e.dataset.note];
+              N[n] = Object.assign(
+                { tugas: "", uts: "", uas: "", note: "" },
+                N[n],
+                { note: e.value },
+              );
+            }),
+        );
+        $("#saveA").onclick = () => {
+          localStorage.setItem(`absensi:${K}:${D}`, JSON.stringify(A));
+          localStorage.setItem(`catatan-absensi:${K}:${D}`, JSON.stringify(AN));
+          alert("Absensi tersimpan");
+          render();
+        };
+        $("#saveN").onclick = () => {
+          localStorage.setItem(`nilai:${K}`, JSON.stringify(N));
+          alert("Nilai tersimpan");
+          render();
+        };
+        $("#csvA").onclick = () =>
+          csv(`Absensi_${K}_${D}.csv`, [
+            ["No", "Nama", "Tanggal", "Status", "Catatan"],
+            ...names().map((n, i) => [i + 1, n, D, A[n] || "H", AN[n] || ""]),
+          ]);
+        $("#csvN").onclick = () =>
+          csv(`Nilai_${K}.csv`, [
+            ["No", "Nama", "Tugas", "UTS", "UAS", "Rata-rata", "Catatan"],
+            ...names().map((n, i) => [
+              i + 1,
+              n,
+              N[n]?.tugas,
+              N[n]?.uts,
+              N[n]?.uas,
+              avg(n),
+              N[n]?.note,
+            ]),
+          ]);
+        if ($("#csvRA"))
+          $("#csvRA").onclick = () =>
+            csv(`Rekap_Absensi_${K}.csv`, [
+              ["Tanggal", "Hadir", "Sakit", "Izin", "Alpa"],
+              ...Object.keys(localStorage)
+                .filter((k) => k.startsWith(`absensi:${K}:`))
+                .map((k) => {
+                  let o = JSON.parse(localStorage.getItem(k) || "{}"),
+                    t = (s) => names().filter((n) => (o[n] || "H") === s).length;
+                  return [k.split(":")[2], t("H"), t("S"), t("I"), t("A")];
+                }),
+            ]);
+        $("#csvRN").onclick = () =>
+          csv(`Rekap_Nilai_${K}.csv`, [
+            ["No", "Nama", "Tugas", "UTS", "UAS", "Rata-rata", "Catatan"],
+            ...names().map((n, i) => [
+              i + 1,
+              n,
+              N[n]?.tugas,
+              N[n]?.uts,
+              N[n]?.uas,
+              avg(n),
+              N[n]?.note,
+            ]),
+          ]);
+        document.querySelectorAll("[data-remove]").forEach((e) =>
+          e.onclick = () => {
+            const list = names(), student = list[+e.dataset.remove];
+            if (!confirm(`Hapus ${student} dari kelas ${K}?`)) return;
+            list.splice(+e.dataset.remove, 1);
+            localStorage.setItem(`siswa:${K}`, JSON.stringify(list));
+            delete A[student]; delete AN[student]; delete N[student];
+            localStorage.setItem(`nilai:${K}`, JSON.stringify(N));
+            load();
+          },
+        );
+      }
+      function renderJournal() {
+        let j = JSON.parse(localStorage.getItem("jurnal-guru") || "[]");
+        $("#jurnal").innerHTML =
+          `<div class="panel journal-form"><label>Tanggal<input id="jd" type="date" value="${D}"></label><label>Kelas<select id="jk">${Object.keys(
+            S,
+          )
+            .map((k) => `<option>${k}</option>`)
+            .join(
+              "",
+            )}</select></label><label>Mata pelajaran<input id="jm" value="IPS"></label><label class="wide">Materi/Topik<input id="jt" placeholder="Contoh: Interaksi sosial"></label><label class="full">Kegiatan dan catatan<input id="ja" placeholder="Kegiatan pembelajaran atau catatan kelas"></label><div class="full actions"><button class="primary" id="saveJ">Simpan Jurnal</button></div></div><div class="tablebox" style="margin-top:14px"><table><thead><tr><th>Tanggal</th><th>Kelas</th><th>Mapel</th><th>Materi/Topik</th><th>Kegiatan/Catatan</th><th></th></tr></thead><tbody>${j.length ? j.map((x) => `<tr><td>${x.date}</td><td>${x.className}</td><td>${esc(x.subject)}</td><td>${esc(x.topic)}</td><td>${esc(x.activity || "—")}</td><td><button data-del="${x.id}">Hapus</button></td></tr>`).join("") : `<tr><td colspan="6" class="empty">Belum ada jurnal tersimpan.</td></tr>`}</tbody></table></div>`;
+        $("#saveJ").onclick = () => {
+          if (!$("#jt").value.trim())
+            return alert("Isi materi/topik terlebih dahulu");
+          j.unshift({
+            id: Date.now(),
+            date: $("#jd").value,
+            className: $("#jk").value,
+            subject: $("#jm").value,
+            topic: $("#jt").value,
+            activity: $("#ja").value,
+          });
+          localStorage.setItem("jurnal-guru", JSON.stringify(j));
+          renderJournal();
+        };
+        document.querySelectorAll("[data-del]").forEach(
+          (e) =>
+            (e.onclick = () => {
+              j = j.filter((x) => x.id != e.dataset.del);
+              localStorage.setItem("jurnal-guru", JSON.stringify(j));
+              renderJournal();
+            }),
+        );
+      }
+      $("#kelas").innerHTML = Object.keys(S)
+        .map((k) => `<option value="${k}">${k} · ${S[k].length} siswa</option>`)
+        .join("");
+      $("#tanggal").value = D;
+      $("#addS").onclick = () => {
+        const student = prompt(`Nama siswa baru untuk kelas ${K}:`)?.trim();
+        if (!student) return;
+        const list = names();
+        if (list.some((n) => n.toLowerCase() === student.toLowerCase())) return alert("Nama siswa sudah ada.");
+        list.push(student); list.sort((a,b) => a.localeCompare(b));
+        localStorage.setItem(`siswa:${K}`, JSON.stringify(list)); load();
+      };
+      $("#resetS").onclick = () => {
+        if (!confirm(`Pulihkan daftar asli kelas ${K}? Siswa tambahan akan dihapus dari daftar.`)) return;
+        localStorage.removeItem(`siswa:${K}`); load();
+      };
+      $("#kelas").onchange = (e) => {
+        K = e.target.value;
+        load();
+      };
+      $("#tanggal").onchange = (e) => {
+        D = e.target.value;
+        load();
+      };
+      $("#tabs").onclick = (e) => {
+        if (e.target.tagName !== "BUTTON") return;
+        document
+          .querySelectorAll(".tabs button,.page")
+          .forEach((x) => x.classList.remove("on"));
+        e.target.classList.add("on");
+        $("#" + e.target.dataset.page).classList.add("on");
+        if (e.target.dataset.page.includes("rekap")) render();
+      };
+      load();
+    </script>
+  </body>
+</html>
